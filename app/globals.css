@@ -1,26 +1,140 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-ink: #0e0c0a;
+  --color-coal: #17130f;
+  --color-char: #221c17;
+  --color-gold: #c9a45c;
+  --color-gold-light: #e8d2a0;
+  --color-gold-dark: #8f7038;
+  --color-cream: #f7f0e3;
+  --color-parchment: #efe4cf;
+  --color-wine: #7d1e2c;
+  --color-wine-dark: #561520;
+  --color-herb: #4f6b3a;
+
+  --font-display: var(--font-playfair), var(--font-serif-hy), Georgia, serif;
+  --font-sans: var(--font-manrope), var(--font-sans-hy), system-ui, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-ink);
+  color: var(--color-cream);
+  font-family: var(--font-sans);
+}
+
+::selection {
+  background: var(--color-gold);
+  color: var(--color-ink);
+}
+
+/* Gold gradient text */
+.text-gold-gradient {
+  background: linear-gradient(180deg, #f3e2b4 0%, #d4b06a 45%, #9c7a3c 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Fine paper grain over dark sections */
+.grain {
+  position: relative;
+  isolation: isolate;
+}
+.grain::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.07;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Armenian-inspired ornamental band (diamonds + crosses, like the tablecloths) */
+.ornament-band {
+  height: 28px;
+  background-color: var(--color-wine-dark);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='28' viewBox='0 0 56 28'%3E%3Cg fill='none' stroke='%23c9a45c' stroke-width='1.2'%3E%3Cpath d='M14 3 25 14 14 25 3 14Z'/%3E%3Cpath d='M14 9 19 14 14 19 9 14Z' fill='%23c9a45c' fill-opacity='.35'/%3E%3C/g%3E%3Cg fill='%23e8d2a0'%3E%3Crect x='41' y='9' width='2' height='10'/%3E%3Crect x='37' y='13' width='10' height='2'/%3E%3C/g%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  background-position: center;
+  border-block: 1px solid rgb(201 164 92 / 0.5);
+}
+
+/* Thin gold divider with a central quatrefoil */
+.divider-gold {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--color-gold);
+}
+.divider-gold::before,
+.divider-gold::after {
+  content: "";
+  height: 1px;
+  flex: 1;
+  background: linear-gradient(90deg, transparent, currentColor);
+}
+.divider-gold::after {
+  background: linear-gradient(270deg, transparent, currentColor);
+}
+
+/* Dotted leader between dish name and price */
+.leader {
+  flex: 1;
+  min-width: 1.5rem;
+  border-bottom: 2px dotted rgb(201 164 92 / 0.45);
+  transform: translateY(-0.35em);
+}
+
+/* Reveal on scroll */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+      opacity 0.8s ease,
+      transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+  .steam span {
+    animation: steam 3.2s ease-in-out infinite;
+  }
+  .steam span:nth-child(2) {
+    animation-delay: 0.8s;
+  }
+  .steam span:nth-child(3) {
+    animation-delay: 1.6s;
+  }
+  .spin-slow {
+    animation: spin 60s linear infinite;
+  }
+}
+
+@keyframes steam {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scaleX(1);
+  }
+  40% {
+    opacity: 0.55;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-34px) scaleX(1.6);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
